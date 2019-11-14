@@ -4,12 +4,6 @@ var options = {
     clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
     username: 'wss',
     password: 'wss',
-    keepalive: 60,
-    reconnectPeriod: 1000,
-    protocolId: 'MQIsdp',
-    protocolVersion: 3,
-    clean: true,
-    encoding: 'utf8'
 };
 const express = require('express'),
     app = express(),
@@ -19,7 +13,7 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     mqtt = require('mqtt'),
     mqttClient = mqtt.connect('mqtt://farmer.cloudmqtt.com:13382', options),
-    mqttTopic = '/meters/pi-1 /teleinfo',
+    mqttTopic = '/meters/pi-1/teleinfo',
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
 
@@ -51,33 +45,6 @@ mqttClient.on('message', function (topic, message) {
     let parsedMessage = JSON.parse(message);
     io.emit('trame', parsedMessage);
 })
-
-/* 
-Function that publishes simulated data to the MQTT broker every ≈20ms
-*/
-function startStreamSimulation() {
-    
-    var v1 = 0,
-        v2 = 0,
-        v3 = 0;
-
-    streamInterval = setInterval(function () {
-
-        /* Prepare random data */
-        v1 = returnRandomFloat(231, 231.1);
-        v2 = returnRandomFloat(235, 235.3);
-        v3 = returnRandomFloat(238.7, 239.3);
-
-        /* Publish random data to the corresponding MQTT topic as a JSON string  */
-        mqttClient.publish(mqttTopic, JSON.stringify({
-            'v1': v1,
-            'v2': v2,
-            'v3': v3
-        }));
-
-
-    }, msFrequency);
-}
 
 function returnRandomFloat(min, max) {
     return (Math.random() * (max - min) + min).toFixed(2);

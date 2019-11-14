@@ -1,6 +1,6 @@
 var options = {
     port: 33382,
-    host: 'mqtt://farmer.cloudmqtt.com',
+    host: 'mqtts://farmer.cloudmqtt.com',
     clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
     username: 'wss',
     password: 'wss',
@@ -18,7 +18,7 @@ const express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     mqtt = require('mqtt'),
-    mqttClient = mqtt.connect('mqtt://farmer.cloudmqtt.com:33382', options),
+    mqttClient = mqtt.connect('mqtts://farmer.cloudmqtt.com:33382', options),
     mqttTopic = '/meters/pi-1 /teleinfo',
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);

@@ -33,7 +33,7 @@ simulated data after successful MQTT connection
 mqttClient.on('connect', () => {
     console.log('Mqtt connected.')
     mqttClient.subscribe(mqttTopic); //subscribe
-    startStreamSimulation(); //publish
+    //startStreamSimulation(); //publish
 })
 
 mqttClient.on('offline', () => {
@@ -47,7 +47,7 @@ Message event fires, when new messages
 arrive on the subscribed topic
 */
 mqttClient.on('message', function (topic, message) {
-    /* console.log('Received: ' + message.toString() + ' from topic: ' + topic.toString()); */
+    console.log('Received: ' + message.toString() + ' from topic: ' + topic.toString()); */
     let parsedMessage = JSON.parse(message);
     io.emit('trame', parsedMessage);
 })

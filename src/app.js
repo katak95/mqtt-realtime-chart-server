@@ -1,3 +1,16 @@
+var options = {
+    port: 33382,
+    host: 'mqtt://farmer.cloudmqtt.com',
+    clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
+    username: 'wss',
+    password: 'wss',
+    keepalive: 60,
+    reconnectPeriod: 1000,
+    protocolId: 'MQIsdp',
+    protocolVersion: 3,
+    clean: true,
+    encoding: 'utf8'
+};
 const express = require('express'),
     app = express(),
     cors = require('cors'),
@@ -5,8 +18,8 @@ const express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     mqtt = require('mqtt'),
-    mqttClient = mqtt.connect('mqtt://0.0.0.0:1883'),
-    mqttTopic = 'voltage',
+    mqttClient = mqtt.connect('mqtt://farmer.cloudmqtt.com:33382'),
+    mqttTopic = '/meters/pi-1 /teleinfo',
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
 
@@ -36,7 +49,7 @@ arrive on the subscribed topic
 mqttClient.on('message', function (topic, message) {
     /* console.log('Received: ' + message.toString() + ' from topic: ' + topic.toString()); */
     let parsedMessage = JSON.parse(message);
-    io.emit('voltageData', parsedMessage);
+    io.emit('PAPP', parsedMessage);
 })
 
 /* 
